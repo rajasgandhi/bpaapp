@@ -1,45 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Apicalypse } from "apicalypse";
-
-const rawQueryString = "fields a,b,c;limit 50;offset 0;";
-
-async function retrieveResults() {
-  // async/await
-  /*try {
-    const response = await apicalypse(rawQueryString).request(
-      "https://api.igdb.com/v4/games"
-    );
-
-    // This is an axios response: https://github.com/axios/axios#response-schema
-    console.log(response.data);
-  } catch (err) {
-    console.error(err);
-  }*/
-
-  const options = {
-    method: 'post',
-    headers: {
-      'Client-ID': 't38tq99mdzsvr5d8h4t5lywoeqpehi',
-      'Authorization': '5zcqb60p9t920n3fju93ro8wncocdh'
-    },
-    responseType: 'json'
-  }
-
-  // Promises
-  const response = await Apicalypse(options)
-    .request("https://api.igdb.com/v4/games")
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
+import axios from 'axios';
 
 export default function App() {
-  retrieveResults();
+
+  axios({
+    url: 'https://0fnv5mc41e.execute-api.us-west-2.amazonaws.com/production/v4/age_ratings',
+    method: 'GET',
+    //withCredentials: false,
+    headers: {
+        'Accept': 'application/json',
+        'Client-ID': 't38tq99mdzsvr5d8h4t5lywoeqpehi',
+        'Authorization' : 'Bearer 2ao3gnd6319nczhf8g97nm5l7wgusp',
+    },
+    data: "fields category,checksum,content_descriptions,rating,rating_cover_url,synopsis;"
+  })
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(err => {
+        console.error(err);
+    });
 
   return (
     <View style={styles.container}>
